@@ -32,7 +32,6 @@ class Customer:
         Returns:
             the statement as a String
         """
-        total_amount = 0  # total rental charges
         frequent_renter_points = 0
         # the .format method substitutes actual values into the fmt string
         statement = f"Rental Report for {self.name}\n\n"
@@ -41,7 +40,7 @@ class Customer:
         rental_fmt = "{:40s}  {:6d} {:6.2f}\n"
 
         frequent_renter_points, statement, total_amount = self.total_charge(
-            frequent_renter_points, rental_fmt, statement, total_amount)
+            frequent_renter_points, rental_fmt, statement, total_amount=0)
 
         # footer: summary of charges
         statement += "\n"
