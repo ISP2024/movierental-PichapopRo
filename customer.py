@@ -41,8 +41,8 @@ class Customer:
         rental_fmt = "{:40s}  {:6d} {:6.2f}\n"
 
         for rental in self.rentals:
-            # compute the frequent renter points based on movie price code
-            frequent_renter_points = rental.rental_point(frequent_renter_points)
+            # calculate frequent renter points using separate method in Rental
+            frequent_renter_points += rental.rental_points()
             #  add a detail line to statement
             statement += rental_fmt.format(
                 rental.get_movie().get_title(),
