@@ -55,7 +55,7 @@ class Customer:
                        total_amount):
         for rental in self.rentals:
             # calculate frequent renter points using separate method in Rental
-            frequent_renter_points += rental.rental_points()
+            frequent_renter_points += rental.get_rental_points()
             #  add a detail line to statement
             statement += rental_fmt.format(
                 rental.get_movie().get_title(),
