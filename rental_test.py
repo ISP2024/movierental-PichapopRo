@@ -1,5 +1,5 @@
 import unittest
-from customer import Customer
+from price_strategies import RegularPrice, ChildrensPrice, NewReleasePrice
 from rental import Rental
 from movie import Movie
 
@@ -7,15 +7,16 @@ from movie import Movie
 class RentalTest(unittest.TestCase):
 
     def setUp(self):
-        self.new_movie = Movie("Dune: Part Two", Movie.NEW_RELEASE)
-        self.regular_movie = Movie("Air", Movie.REGULAR)
-        self.childrens_movie = Movie("Frozen", Movie.CHILDRENS)
+
+        self.new_movie = Movie("Dune: Part Two", NewReleasePrice())
+        self.regular_movie = Movie("Air", RegularPrice())
+        self.childrens_movie = Movie("Frozen", ChildrensPrice())
 
     def test_movie_attributes(self):
-        """trivial test to catch refactoring errors or change in API of Movie"""
-        m = Movie("Air", Movie.REGULAR)
+        """Trivial test to catch refactoring errors or changes in the API of Movie."""
+        m = Movie("Air", RegularPrice())
         self.assertEqual("Air", m.get_title())
-        self.assertEqual(Movie.REGULAR, m.get_price_code())
+        self.assertIsInstance(m.price_strategy, RegularPrice)
 
     def test_rental_price(self):
         """Test get_price method in Rental after refactoring."""
@@ -38,12 +39,11 @@ class RentalTest(unittest.TestCase):
         self.assertEqual(rental.get_price(), 3.0)
 
     def test_rental_points(self):
-        new_release_movie = Movie("New Release", Movie.NEW_RELEASE)
-        regular_movie = Movie("Regular Movie", Movie.REGULAR, )
-        childrens_movie = Movie("Children's Movie", Movie.CHILDRENS)
-        rental = Rental(new_release_movie, 1)
+        rental = Rental(self.new_movie, 1)
         self.assertEqual(rental.get_rental_points(), 1)
-        rental = Rental(regular_movie, 3)
+        rental = Rental(self.new_movie, 3)
+        self.assertEqual(rental.get_rental_points(), 3)
+        rental = Rental(self.regular_movie, 3)
         self.assertEqual(rental.get_rental_points(), 1)
-        rental = Rental(childrens_movie, 3)
+        rental = Rental(self.childrens_movie, 3)
         self.assertEqual(rental.get_rental_points(), 1)

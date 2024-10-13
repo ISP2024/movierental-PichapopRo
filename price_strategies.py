@@ -4,7 +4,6 @@ class PriceStrategy(ABC):
     """Abstract base class for rental pricing."""
     _instance = None
 
-    @classmethod
     def __new__(cls):
         if not cls._instance:
             cls._instance = super(PriceStrategy, cls).__new__(cls)
@@ -51,8 +50,3 @@ class NewReleasePrice(PriceStrategy):
 
     def get_rental_points(self, days_rented):
         return days_rented
-
-
-NEW_RELEASE = NewReleasePrice()
-REGULAR = RegularPrice()
-CHILDREN = ChildrensPrice()

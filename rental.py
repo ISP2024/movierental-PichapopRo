@@ -1,5 +1,5 @@
 import logging
-
+from logging import exception
 from movie import Movie
 
 
@@ -28,30 +28,13 @@ class Rental:
         return self.days_rented
 
     def get_price(self):
-        # compute rental change
-        amount = 0
-        if self.get_movie().get_price_code() == Movie.REGULAR:
-            # Two days for $2, additional days 1.50 per day.
-            amount = 2.0
-            if self.get_days_rented() > 2:
-                amount += 1.5 * (self.get_days_rented() - 2)
-        elif self.get_movie().get_price_code() == Movie.CHILDRENS:
-            # Three days for $1.50, additional days 1.50 per day.
-            amount = 1.5
-            if self.get_days_rented() > 3:
-                amount += 1.5 * (self.get_days_rented() - 3)
-        elif self.get_movie().get_price_code() == Movie.NEW_RELEASE:
-            # Straight $3 per day charge
-            amount = 3 * self.get_days_rented()
-        else:
+        try:
+            return self.movie.get_price(self.days_rented)
+        except exception(Exception):
             log = logging.getLogger()
             log.error(
                 f"Movie {self.get_movie()} has unrecognized priceCode {self.get_movie().get_price_code()}")
-        return amount
 
     def get_rental_points(self):
         """Calculates the frequent renter points for this rental."""
-        if self.movie.get_price_code() == Movie.NEW_RELEASE:
-            return self.days_rented
-        else:
-            return 1
+        return self.movie.get_rental_points(self.days_rented)
