@@ -14,7 +14,7 @@ class Rental:
     For simplicity of this application only days_rented is recorded.
     """
 
-    def __init__(self, movie, days_rented):
+    def __init__(self, movie: Movie, days_rented):
         """Initialize a new movie rental object for
     	   a movie with known rental period (daysRented).
     	"""

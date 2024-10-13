@@ -19,11 +19,10 @@ class CustomerTest(unittest.TestCase):
         self.regular_movie = Movie("CitizenFour", RegularPrice())
         self.childrens_movie = Movie("Frozen", ChildrensPrice())
 
-    @unittest.skip("No convenient way to test")
-    def test_billing(self):
-        # no convenient way to test billing since its buried in the
-        # statement() method.
-        pass
+        self.new_release_rental = Rental(self.new_movie, 5)
+        self.regular_rental = Rental(self.regular_movie, 3)
+        self.childrens_rental = Rental(self.childrens_movie, 4)
+
 
     def test_statement(self):
         stmt = self.c.statement()
@@ -38,3 +37,27 @@ class CustomerTest(unittest.TestCase):
         matches = re.match(pattern, stmt.replace('\n', ''), flags=re.DOTALL)
         self.assertIsNotNone(matches)
         self.assertEqual("12.00", matches[1])
+
+    def test_total_charge(self):
+        """Test the total charge calculation for all rentals."""
+        self.c.add_rental(self.new_release_rental)
+        self.c.add_rental(self.regular_rental)
+        self.c.add_rental(self.childrens_rental)
+        expected_total = (
+                self.new_release_rental.get_price() +
+                self.regular_rental.get_price() +
+                self.childrens_rental.get_price()
+        )
+        self.assertEqual(self.c.total_charge(), expected_total)
+
+    def test_total_renter_points(self):
+        """Test the total frequent renter points calculation for all rentals."""
+        self.c.add_rental(self.new_release_rental)
+        self.c.add_rental(self.regular_rental)
+        self.c.add_rental(self.childrens_rental)
+        expected_points = (
+            self.new_release_rental.get_rental_points() +
+            self.regular_rental.get_rental_points() +
+            self.childrens_rental.get_rental_points()
+        )
+        self.assertEqual(self.c.get_rental_points(), expected_points)

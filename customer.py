@@ -1,3 +1,4 @@
+import rental
 from rental import Rental
 
 
@@ -38,30 +39,24 @@ class Customer:
         header_fmt = "{:40s}  {:6s} {:6s}\n"
         statement += header_fmt.format("Movie Title", "  Days", " Price")
         rental_fmt = "{:40s}  {:6d} {:6.2f}\n"
-
-        frequent_renter_points, statement, total_amount = self.total_charge(
-            frequent_renter_points, rental_fmt, statement, total_amount=0)
-
+        total_amount = self.total_charge()
         # footer: summary of charges
         statement += "\n"
         statement += "{:40s}  {:6s} {:6.2f}\n".format(
             "Total Charges", "", total_amount)
         statement += "Frequent Renter Points earned: {}\n".format(
             frequent_renter_points)
-
         return statement
 
-    def total_charge(self, frequent_renter_points, rental_fmt, statement,
-                       total_amount):
-        for rental in self.rentals:
-            # calculate frequent renter points using separate method in Rental
-            frequent_renter_points += rental.get_rental_points()
-            #  add a detail line to statement
-            statement += rental_fmt.format(
-                rental.get_movie().get_title(),
-                rental.get_days_rented(),
-                rental.get_price())
-            # and accumulate activity
-            total_amount += rental.get_price()
-        return frequent_renter_points, statement, total_amount
+    def total_charge(self):
+        total_price = 0
+        for rental_price in self.rentals:
+            total_price += rental_price.get_price()
+        return total_price
+
+    def get_rental_points(self):
+        frequent_renter_points = 0
+        for rental_price in self.rentals:
+            frequent_renter_points += rental_price.get_rental_points()
+        return frequent_renter_points
 
