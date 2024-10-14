@@ -33,19 +33,24 @@ class Customer:
         Returns:
             the statement as a String
         """
-        frequent_renter_points = 0
         # the .format method substitutes actual values into the fmt string
         statement = f"Rental Report for {self.name}\n\n"
         header_fmt = "{:40s}  {:6s} {:6s}\n"
         statement += header_fmt.format("Movie Title", "  Days", " Price")
         rental_fmt = "{:40s}  {:6d} {:6.2f}\n"
         total_amount = self.total_charge()
+        for rental in self.rentals:
+            amount = rental.get_price()
+            statement += rental_fmt.format(
+                rental.get_movie().get_title(),
+                rental.get_days_rented(),
+                amount)
         # footer: summary of charges
         statement += "\n"
         statement += "{:40s}  {:6s} {:6.2f}\n".format(
             "Total Charges", "", total_amount)
         statement += "Frequent Renter Points earned: {}\n".format(
-            frequent_renter_points)
+            self.get_rental_points())
         return statement
 
     def total_charge(self):
