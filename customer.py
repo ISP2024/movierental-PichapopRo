@@ -54,10 +54,7 @@ class Customer:
         return statement
 
     def total_charge(self):
-        total_price = 0
-        for rental_price in self.rentals:
-            total_price += rental_price.get_price()
-        return total_price
+        return sum(rental.get_price() for rental in self.rentals)
 
     def get_rental_points(self):
         frequent_renter_points = 0
