@@ -29,7 +29,7 @@ class Rental:
 
     def get_price(self):
         try:
-            return self.movie.get_price(self.days_rented)
+            return self.movie.price_code.get_price(self.days_rented)
         except exception(Exception):
             log = logging.getLogger()
             log.error(
@@ -37,4 +37,4 @@ class Rental:
 
     def get_rental_points(self):
         """Calculates the frequent renter points for this rental."""
-        return self.movie.get_rental_points(self.days_rented)
+        return self.movie.price_code.get_rental_points(self.days_rented)

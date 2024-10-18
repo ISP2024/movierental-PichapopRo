@@ -1,9 +1,11 @@
 from price_strategies import PriceStrategy
 
+
 class Movie:
     """
     A movie available for rent.
     """
+
     # The types of movies (price_code).
 
     def __init__(self, title, price_code: PriceStrategy):
@@ -16,7 +18,6 @@ class Movie:
 
     def get_price_code(self):
         return self.price_code
-
 
     def get_price(self, days_rented):
         return self.price_code.get_price(days_rented)

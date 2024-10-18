@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class PriceStrategy(ABC):
     """Abstract base class for rental pricing."""
     _instance = None
@@ -30,6 +31,7 @@ class RegularPrice(PriceStrategy):
     def get_rental_points(self, days_rented):
         return 1
 
+
 class ChildrensPrice(PriceStrategy):
     """Pricing rules for children's movies."""
 
@@ -41,6 +43,7 @@ class ChildrensPrice(PriceStrategy):
 
     def get_rental_points(self, days_rented):
         return 1
+
 
 class NewReleasePrice(PriceStrategy):
     """Pricing rules for new release movies."""
