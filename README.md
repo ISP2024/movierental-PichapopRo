@@ -18,3 +18,12 @@ Before and after each refactoring you should **run the unit tests**.
 
 See [Resources](https://cpske.github.io/ISP/assignment/movierental/movierental-part1#resources) in the assignment description.
 
+## Rationale
+2.1 what refactoring signs (code smells) suggest this refactoring?
+Movie-specific details and rental pricing strategies should not be mixed. 
+SRP dictates that a class should have only one reason to change.
+
+2.2 what design principle suggests this refactoring? Why?
+SRP
+Managing movie-related data (such as the movie title).
+Managing rental pricing and rental points logic (through the price_code).
