@@ -11,13 +11,14 @@ class CustomerTest(unittest.TestCase):
 
     def setUp(self):
         """Test fixture contains:
-    	c = a customer
-    	movies = list of some movies
-    	"""
+        c = a customer
+
+        movies = list of some movies
+        """
         self.c = Customer("Movie Mogul")
-        self.new_movie = Movie("Mulan", NewReleasePrice())
-        self.regular_movie = Movie("CitizenFour", RegularPrice())
-        self.childrens_movie = Movie("Frozen", ChildrensPrice())
+        self.new_movie = Movie("Mulan", 2024, {"Animation", "Action"})  # Add genre
+        self.regular_movie = Movie("CitizenFour", 2014, {"Documentary"})  # Add genre
+        self.childrens_movie = Movie("Frozen", 2013 ,{"Animation", "Children"})  # Add genre
 
         self.new_release_rental = Rental(self.new_movie, 5)
         self.regular_rental = Rental(self.regular_movie, 3)

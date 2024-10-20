@@ -42,7 +42,7 @@ class Customer:
         for rental in self.rentals:
             amount = rental.get_price()
             statement += rental_fmt.format(
-                rental.get_movie().get_title(),
+                rental.get_movie().title,
                 rental.get_days_rented(),
                 amount)
         # footer: summary of charges

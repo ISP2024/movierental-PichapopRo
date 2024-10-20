@@ -1,6 +1,8 @@
 import csv
+import logging
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Collection
+
 
 @dataclass(frozen=True)
 class Movie:
@@ -8,7 +10,7 @@ class Movie:
 
     title: str
     year: int
-    genre: set[str]
+    genre: Collection[str]
 
     def is_genre(self, genre: str) -> bool:
         """Checks if the movie belongs to the given genre."""
@@ -33,16 +35,27 @@ class MovieCatalog:
         if not self._movies:
             self._load_movies()
 
-    def _load_movies(self):
-        """Loads movies from a CSV file."""
+    def _load_movies(cls):
+        """Loads movies from a CSV file and handles various parsing errors."""
         with open("movies.csv", "r") as csvfile:
             reader = csv.reader(csvfile)
-            for row in reader:
-                title, year, genres = row
-                year = int(year)
-                genre_set = set(genres.split(","))
-                movie = Movie(title, year, genre_set)
-                self._movies[movie.title] = movie
+            for row_num, row in enumerate(reader, start=1):
+                if row and not row[0].startswith("#"):
+                    try:
+                        if len(row) < 4:
+                            logging.error(f"Invalid format at row {row_num}: {row}")
+                            continue
+                        _, title, year_str, genres_str = row
+                        try:
+                            year = int(year_str)
+                        except ValueError:
+                            logging.error(f"Invalid year at row {row_num}: {year_str}")
+                            continue
+                        genre_set = list(genre.strip() for genre in genres_str.split("|"))
+                        movie = Movie(title, year, genre_set)
+                        cls._movies[movie.title] = movie
+                    except ValueError as e:
+                        logging.error(f"Error parsing row {row_num}: {row}, Error: {e}")
 
     def get_movie(self, title: str, year: Optional[int] = None) -> Optional[Movie]:
         """Retrieves a movie by title and optional year."""

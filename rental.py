@@ -41,12 +41,10 @@ class Rental:
         return self.days_rented
 
     def get_price(self):
-        try:
+        if self.movie is None:
+            return 0
+        else:
             return self.price_code_for_movie(self.movie).get_price(self.days_rented)
-        except exception(Exception):
-            log = logging.getLogger()
-            log.error(
-                f"Movie {self.get_movie()} has unrecognized priceCode {self.price_code_for_movie(self.movie)}")
 
     def get_rental_points(self):
         """Calculates the frequent renter points for this rental."""

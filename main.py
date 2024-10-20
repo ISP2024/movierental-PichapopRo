@@ -1,7 +1,7 @@
 # Demonstrate the movie rental code.
 # Create a customer with some movies and print a statement.
 
-from movie import Movie
+from movie import Movie, MovieCatalog
 from rental import Rental
 from customer import Customer
 from price_strategies import NewReleasePrice, RegularPrice, ChildrensPrice
@@ -9,12 +9,13 @@ from price_strategies import NewReleasePrice, RegularPrice, ChildrensPrice
 
 def make_movies():
     """Some sample movies."""
+    catalog = MovieCatalog()
     movies = [
-        Movie("Air", NewReleasePrice()),
-        Movie("Oppenheimer", RegularPrice()),
-        Movie("Frozen", ChildrensPrice()),
-        Movie("Bitconned", NewReleasePrice()),
-        Movie("Particle Fever", RegularPrice()),
+        Movie('Air', 2024, {"Animation"}),
+        catalog.get_movie("Oppenheimer"),
+        Movie("Frozen", 2013, {"Animation", 'Childrens'}),
+        catalog.get_movie("Bitconned"),
+        catalog.get_movie("Particle Fever"),
     ]
     return movies
 
