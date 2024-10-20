@@ -1,7 +1,8 @@
 import logging
 from logging import exception
 from movie import Movie
-from price_strategies import PriceStrategy
+from price_strategies import PriceStrategy, ChildrensPrice, NewReleasePrice, RegularPrice
+import datetime
 
 
 class Rental:
@@ -23,6 +24,17 @@ class Rental:
         self.days_rented = days_rented
         self.price_code = price_code
 
+    @classmethod
+    def price_code_for_movie(cls, movie: Movie) -> PriceStrategy:
+        """Determines the price code for a movie."""
+        current_year = datetime.date.today().year
+        if movie.year == current_year:
+            return NewReleasePrice()
+        elif any(genre.lower() in ("Children", "Childrens") for genre in movie.genre):
+            return ChildrensPrice()
+        else:
+            return RegularPrice()
+
     def get_movie(self):
         return self.movie
 
@@ -35,7 +47,7 @@ class Rental:
         except exception(Exception):
             log = logging.getLogger()
             log.error(
-                f"Movie {self.get_movie()} has unrecognized priceCode {self.get_movie().get_price_code()}")
+                f"Movie {self.get_movie()} has unrecognized priceCode {self.price_code_for_movie(self.movie)}")
 
     def get_rental_points(self):
         """Calculates the frequent renter points for this rental."""
