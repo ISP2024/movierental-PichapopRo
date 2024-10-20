@@ -16,13 +16,12 @@ class Rental:
     For simplicity of this application only days_rented is recorded.
     """
 
-    def __init__(self, movie: Movie, days_rented, price_code: PriceStrategy):
+    def __init__(self, movie: Movie, days_rented):
         """Initialize a new movie rental object for
     	   a movie with known rental period (daysRented).
     	"""
         self.movie = movie
         self.days_rented = days_rented
-        self.price_code = price_code
 
     @classmethod
     def price_code_for_movie(cls, movie: Movie) -> PriceStrategy:
@@ -30,7 +29,7 @@ class Rental:
         current_year = datetime.date.today().year
         if movie.year == current_year:
             return NewReleasePrice()
-        elif any(genre.lower() in ("Children", "Childrens") for genre in movie.genre):
+        elif any(genre.lower() in ("children", "childrens") for genre in movie.genre):
             return ChildrensPrice()
         else:
             return RegularPrice()
@@ -43,7 +42,7 @@ class Rental:
 
     def get_price(self):
         try:
-            return self.price_code.get_price(self.days_rented)
+            return self.price_code_for_movie(self.movie).get_price(self.days_rented)
         except exception(Exception):
             log = logging.getLogger()
             log.error(
@@ -51,4 +50,4 @@ class Rental:
 
     def get_rental_points(self):
         """Calculates the frequent renter points for this rental."""
-        return self.price_code.get_rental_points(self.days_rented)
+        return self.price_code_for_movie(self.movie).get_rental_points(self.days_rented)
