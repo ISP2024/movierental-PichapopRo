@@ -32,4 +32,5 @@ Managing rental pricing and rental points logic (through the price_code).
 Tight Coupling: Placing the function in Rental could create tighter coupling between the Rental and Movie classes. 
 This can make the code less flexible and harder to maintain, as changes to one class might require modifications to the other.
 
-Information Expert: The Movie class already contains the necessary information (year and genre) to determine the price code. Placing the logic in Movie aligns better with the information expert principle, which suggests that a class should be responsible for handling data related to its own attributes.
+Information Expert: The Movie class already contains the necessary information (year and genre) to determine the price code. Placing the logic in Movie aligns better with the information expert principle, 
+which suggests that a class should be responsible for handling data related to its own attributes.
