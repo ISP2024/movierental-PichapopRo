@@ -35,7 +35,7 @@ class MovieCatalog:
         if not self._movies:
             self._load_movies()
 
-    def _load_movies(cls):
+    def _load_movies(self):
         """Loads movies from a CSV file and handles various parsing errors."""
         with open("movies.csv", "r") as csvfile:
             reader = csv.reader(csvfile)
@@ -53,7 +53,7 @@ class MovieCatalog:
                             continue
                         genre_set = list(genre.strip() for genre in genres_str.split("|"))
                         movie = Movie(title, year, genre_set)
-                        cls._movies[movie.title] = movie
+                        self._movies[movie.title] = movie
                     except ValueError as e:
                         logging.error(f"Error parsing row {row_num}: {row}, Error: {e}")
 
